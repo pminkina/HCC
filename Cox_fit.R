@@ -2,13 +2,15 @@ library(survival)
 library(survminer)
 library(ggplot2)
 
+source("helpresfns.R")
+
 #survival analysis
 memb2check<-bnres$memb #plug in memberships by other algorithms here as well
-HCC_surv_df<-readRDS("../HCCinputs/info.rds") #load clinical data
+HCC_surv_df<-readRDS("HCCinputs/info.rds") #load clinical data
 pats<-HCC_surv_df$patientID
 
 #for non-adjusted model
-curru<-checkduplicated(memb2check,pats) #check patients with duplicated biosies (same cluster or not, if not - exclude both, if same include one)
+curru<-checkduplicated(memb2check,pats) #check patients with duplicated biopsies (same cluster or not, if not - exclude both, if same include one)
 survobj<-HCC_surv_df[curru,]
 survobj<-cbind(survobj,as.factor(memb2check[curru]))
 nrow(survobj) #how many samples were included
